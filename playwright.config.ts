@@ -1,79 +1,76 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from "@playwright/test";
+import dotenv from "dotenv";
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+// --- Variables d'environnement ---
+// Si ENV est défini (ex. ENV=staging), on charge d'abord .env.staging.
+// dotenv n'écrase pas une variable déjà définie : le premier fichier chargé a la priorité.
+if (process.env.ENV) {
+  dotenv.config({ path: `.env.${process.env.ENV}` });
+}
+// Puis on charge le .env par défaut (valeurs communes, utilisées en l'absence d'ENV).
+dotenv.config();
 
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
+// GitHub Actions (et la plupart des CI) définit automatiquement la variable CI.
+// On s'en sert pour adapter la config entre ton poste et la CI.
+const isCI = !!process.env.CI;
+
 export default defineConfig({
-  testDir: './tests',
-  /* Run tests in files in parallel */
-  fullyParallel: true,
-  /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
-  use: {
-    /* Base URL to use in actions like `await page.goto('')`. */
-    // baseURL: 'http://localhost:3000',
+  // Dossier où Playwright cherche les fichiers de tests (*.spec.ts)
+  testDir: "./tests",
 
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+  // --- Exécution ---
+  fullyParallel: true, // les tests d'un même fichier tournent en parallèle
+  forbidOnly: isCI, // en CI, échoue si un test.only traîne dans le code
+  retries: isCI ? 2 : 0, // en CI, relance 2 fois un test échoué (utile contre les tests instables)
+  workers: isCI ? 1 : undefined, // CI : 1 seul worker (stabilité) ; local : valeur automatique selon ton CPU
+
+  // --- Délais (timeouts) ---
+  timeout: 120_000, // durée maximale d'un test entier (2 min)
+  expect: { timeout: 5_000 }, // durée pendant laquelle une vérification (expect) réessaie avant d'échouer
+
+  // --- Rapports ---
+  // Le premier élément de chaque liste est le format, le second ses options.
+  reporter: isCI
+    ? [
+        ["list"], // une ligne par test dans les logs
+        ["github"], // annotations d'erreur directement dans l'interface GitHub
+        ["html", { open: "never" }], // rapport HTML complet, sans l'ouvrir automatiquement
+      ]
+    : [
+        ["list"],
+        ["html", { open: "on-failure" }], // en local, ouvre le rapport seulement si un test échoue
+      ],
+
+  // --- Options communes à tous les projets (navigateurs) ---
+  use: {
+    // URL de base : permet d'écrire page.goto("/") dans les tests.
+    // Vient du .env (BASE_URL), avec saucedemo.com en valeur par défaut.
+    baseURL: process.env.BASE_URL ?? "https://www.saucedemo.com",
+
+    actionTimeout: 10_000, // durée maximale d'une action (clic, saisie…)
+    navigationTimeout: 15_000, // durée maximale d'un chargement de page
+
+    // Éléments de débogage : conservés uniquement quand un test échoue, pour ne pas encombrer le dossier de résultats.
+    trace: "retain-on-failure", // trace complète (ouvrable avec le trace viewer)
+    screenshot: "only-on-failure", // capture d'écran au moment de l'échec
+    video: {
+      mode: "retain-on-failure", // vidéo gardée seulement pour les tests échoués
+      size: { width: 1280, height: 720 }, // résolution de la vidéo (720p)
+    },
+
+    // Langue et fuseau horaire du navigateur : mêmes résultats sur ton PC et en CI
+    locale: "fr-FR",
+    timezoneId: "Europe/Paris",
   },
 
-  /* Configure projects for major browsers */
+  // --- Navigateurs ---
   projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
+    // Chromium : lancé par défaut avec un simple `npx playwright test`
+    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
 
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
+    // Firefox et WebKit restent configurés mais ne tournent pas par défaut (`default: false`,
+    // Pour les lancer : `npx playwright test --project=firefox` ou tous à la fois (ex. en CI) : `npx playwright test --project="*"`
+    { name: "firefox", use: { ...devices["Desktop Firefox"] }, default: false },
+    { name: "webkit", use: { ...devices["Desktop Safari"] }, default: false },
   ],
-
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://localhost:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
 });
