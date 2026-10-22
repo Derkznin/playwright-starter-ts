@@ -1,5 +1,5 @@
 import { test as base, expect } from '@playwright/test';
-import { ExemplePage } from '../pages/exemple-a-reutiliser/ExemplePage';
+import { ExemplePage } from '../pages/exemple-a-reutiliser/exemple-page';
 
 // Liste des fixtures personnalisées disponibles dans les tests
 type IndexFixtures = {

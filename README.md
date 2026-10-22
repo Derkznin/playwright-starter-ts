@@ -1,82 +1,90 @@
-# Playwright TypeScript Test Template
+# 🎭 Playwright TypeScript Test Template
 
-Template de test automatisé robuste, réutilisable et maintenable basé sur **Playwright** et **TypeScript**.
+## 📖 Présentation du projet
 
-## 🚀 Fonctionnalités
+Projet basé sur **Playwright** et **TypeScript**, visant à fournir un template de tests automatisés robuste, réutilisable et maintenable.
 
-- **TypeScript** : Typage statique pour sécuriser et structurer le code.
-- **Playwright Test** : Exécution rapide et fiable des tests end-to-end multi-navigateurs.
-- **ESLint** : Analyse statique du code avec support de TypeScript et règles spécifiques pour Playwright (`eslint-plugin-playwright`).
-- **Prettier** : Formatage automatique et homogène du code.
-- **Architecture modulaire** : Prêt pour l'implémentation du design pattern _Page Object Model (POM)_.
+## ⚙️ Prérequis et installation
 
----
+- Node.js
+- npm
+- Git
 
-## 📁 Structure du Projet
+### 📥 1. Installer le projet
+
+Cloner le projet et installer les dépendances :
+
+```bash
+git clone <url-du-depot>
+cd my-playwright-project
+npm install
+npx playwright install
+```
+
+### 🔐 2. Configurer les variables d'environnement
+
+Après l'installation du projet, créer un fichier `.env` à la racine du projet, au même niveau que `package.json`.
+
+Ce fichier permet de définir les variables d'environnement nécessaires à l'exécution des tests, comme l'URL de l'application ou les identifiants de test.
+
+Exemple de fichier `.env` :
+
+```dotenv
+BASE_URL=https://example.com
+TEST_USERNAME=your-username
+TEST_PASSWORD=your-password
+```
+
+Adapter les variables aux besoins du projet.
+
+⚠️ **Important :** ne jamais versionner le fichier `.env` s'il contient des informations sensibles. Ajouter `.env` au fichier `.gitignore` et, si nécessaire, fournir un fichier `.env.example` contenant uniquement les noms des variables et des valeurs fictives.
+
+## 🚀 Commandes principales
+
+| Commande                       | Description                                   |
+| ------------------------------ | --------------------------------------------- |
+| `npx playwright test`          | Exécuter tous les tests                       |
+| `npx playwright test --ui`     | Lancer le mode UI                             |
+| `npx playwright test --headed` | Exécuter les tests avec le navigateur visible |
+| `npx playwright show-report`   | Afficher le rapport HTML                      |
+
+Pour les commandes de qualité du code et de vérification, consultez la [documentation des commandes de développement](docs/commandes-developpement.md).
+
+## 🧰 Fonctionnalités
+
+- **TypeScript** : typage statique pour sécuriser et structurer le code.
+- **Playwright** : exécution des tests end-to-end sur plusieurs navigateurs.
+- **ESLint** : analyse statique du code avec des règles adaptées à TypeScript et Playwright.
+- **Prettier** : formatage automatique et homogène du code.
+- **Page Object Model** : séparation des interactions avec les pages et des scénarios de test.
+- **Fixtures personnalisées** : réutilisation et gestion du contexte de test.
+
+## 📁 Structure du projet
 
 ```text
 my-playwright-project/
 ├── .github/
-│   └── workflows/             # Pipelines CI/CD (optionnel)
-├── fixtures/                  # Fixtures personnalisées Playwright
-├── pages/                     # Page Objects (pages de l'application)
-├── tests/                     # Fichiers de tests E2E (.spec.ts)
-├── utils/                     # Fonctions et classes utilitaires
-├── .eslintrc.json             # Configuration ESLint
-├── .prettierrc                # Configuration Prettier
-├── .prettierignore            # Fichiers/dossiers ignorés par Prettier
-├── playwright.config.ts       # Configuration globale de Playwright
-├── package.json               # Dépendances et scripts NPM
-└── tsconfig.json              # Configuration TypeScript
+│   └── workflows/              # Pipelines CI/CD (optionnel)
+├── docs/                       # Documentation détaillée
+├── fixtures/                   # Fixtures personnalisées Playwright
+├── pages/                      # Page Objects
+├── tests/                      # Tests end-to-end (.spec.ts)
+├── utils/                      # Fonctions et classes utilitaires
+├── .eslintrc.json              # Configuration ESLint
+├── .prettierrc                 # Configuration Prettier
+├── .prettierignore             # Fichiers ignorés par Prettier
+├── playwright.config.ts        # Configuration Playwright
+├── package.json                # Dépendances et scripts npm
+└── tsconfig.json               # Configuration TypeScript
 ```
 
-## Commande à utiliser dans le terminal
+## 📚 Documentation détaillée
 
-npm run lint : Vérifier les erreurs dans le code
-npm run lint:fix : Corriger automatiquement les erreurs ESLint
-npm run format : Formater automatiquement tous les fichiers du projet
-npm run format:check : Vérifier si le code est correctement formaté (utile pour la CI/CD)
-npm run typecheck : Vérifier l'intégrité des types sans compiler les fichiers
+- 🖥️ [Commandes de développement](docs/commandes-developpement.md)
+- 📝 [Conventions de nommage](docs/conventions-nommage.md)
+- 🧩 [Fixtures](docs/fixtures.md)
+- 🔄 [Mettre à jour Playwright](docs/mise-a-jour-Playwright.md)
 
-## Découper les fixtures en plusieurs fichiers
+👤 Auteur
 
-Par défaut, toutes les fixtures sont dans `fixtures/index.ts`. Quand ce fichier devient
-trop long, ou que les fixtures sont de natures différentes (pages, API, authentification),
-on les sépare par domaine et on les regroupe avec `mergeTests`.
-
-```
-fixtures/
-  pages.fixtures.ts   -> les Page Objects
-  api.fixtures.ts     -> les données liées à l'API
-  index.ts            -> regroupe les deux
-```
-
-Chaque fichier exporte son propre `test` (avec `base.extend`), puis `index.ts` les fusionne :
-
-```typescript
-import { mergeTests } from '@playwright/test';
-import { test as pagesTest } from './pages.fixtures';
-import { test as apiTest } from './api.fixtures';
-
-export const test = mergeTests(pagesTest, apiTest);
-
-export { expect } from '@playwright/test';
-```
-
-Les tests continuent d'importer `test` et `expect` depuis `../fixtures`, sans rien changer.
-Deux fichiers ne doivent pas déclarer une fixture du même nom.
-
-## Conventions de nommage
-
-| Élément                           | Convention         | Exemple                       |
-| --------------------------------- | ------------------ | ----------------------------- |
-| Dossiers                          | `kebab-case`       | `page-objects/`, `test-data/` |
-| Fichiers de test                  | `kebab-case`       | `login.spec.ts`               |
-| Fichiers de classes               | `PascalCase`       | `LoginPage.ts`                |
-| Fichiers de fixtures              | `kebab-case`       | `test-fixtures.ts`            |
-| Fichiers utilitaires avec classes | `PascalCase`       | `DateUtils.ts`                |
-| Classes                           | `PascalCase`       | `LoginPage`                   |
-| Interfaces et types               | `PascalCase`       | `UserProfile`                 |
-| Variables                         | `camelCase`        | `baseUrl`                     |
-| Fonctions et méthodes             | `camelCase`        | `getUserProfile()`            |
-| Constantes globales immuables     | `UPPER_SNAKE_CASE` | `DEFAULT_TIMEOUT`             |
+Projet développé par Corentin HARDON.
