@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { expect, Page } from '@playwright/test';
 
 export class ExemplePage {
   readonly page: Page;
@@ -11,10 +11,16 @@ export class ExemplePage {
   }
 
   /**
-   * Exemple de méthode
-   *
+   * Exemple de méthode de redirection
    */
   async exempleMethode() {
     await this.page.goto('/');
+  }
+
+  /**
+   * Exemple pour vérifier que la page affiche un titre
+   */
+  async exempleVerifierTitre() {
+    await expect(this.page).toHaveTitle(/.+/);
   }
 }
