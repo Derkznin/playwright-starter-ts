@@ -81,7 +81,7 @@ my-playwright-project/
 ## 📚 Documentation détaillée
 
 - 🖥️ [Commandes de développement](docs/commandes-developpement.md)
-- 📝 [Conventions de nommage](docs/conventions-nommage.md)
+- 📝 [Conventions](docs/conventions.md)
 - 🧩 [Fixtures](docs/fixtures.md)
 - 🔄 [Mettre à jour Playwright](docs/mise-a-jour-Playwright.md)
 

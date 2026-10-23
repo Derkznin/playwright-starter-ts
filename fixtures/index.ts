@@ -6,12 +6,12 @@ type IndexFixtures = {
   exemplePage: ExemplePage;
 };
 
-// Étend le test de base de Playwright avec nos fixtures
+// Étend le test de base de Playwright avec les fixtures
 export const test = base.extend<IndexFixtures>({
+  // Copier ce bloc pour ajouter une page
   exemplePage: async ({ page }, use) => {
     await use(new ExemplePage(page));
   },
-  // A compléter
 });
 
 // Réexporte expect pour n'avoir qu'un seul import dans les tests
