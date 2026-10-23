@@ -6,8 +6,8 @@ import { test } from '../../fixtures';
  */
 test.describe('Nom de la fonctionnalité (A REMPLACER)', { tag: '@tag-a-remplacer' }, () => {
   // Exécuté avant chaque test du groupe : FACULTATIF
-  test.beforeEach(async ({ exemplePage }) => {
-    await exemplePage.exempleMethode();
+  test.beforeEach(async ({ basePage }) => {
+    await basePage.navigateTo('/');
   });
 
   // Exécuté après chaque test du groupe : FACULTATIF
@@ -19,6 +19,7 @@ test.describe('Nom de la fonctionnalité (A REMPLACER)', { tag: '@tag-a-remplace
   test('décrit le comportement attendu (A REMPLACER)', async ({ exemplePage }) => {
     await test.step('Vérifier : résultat attendu (A REMPLACER)', async () => {
       await exemplePage.exempleVerifierTitre();
+      // await loginPage.login();
     });
   });
 });
