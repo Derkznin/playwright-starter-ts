@@ -38,7 +38,7 @@ Les tests lisent leur configuration (URL de l'application, identifiants de test)
    ```dotenv
    BASE_URL=https://example.com
 
-   STANDARD_USERNAME=votre-identifiant
+   STANDARD_ID=votre-identifiant
    STANDARD_PASSWORD=votre-mot-de-passe
    ```
 
