@@ -1,5 +1,36 @@
 # 🧩 Fixtures
 
+## 💡 Qu'est-ce qu'une fixture ?
+
+Une fixture est un objet (ou une préparation) que Playwright fournit automatiquement à un test : il suffit de la demander par son nom dans les paramètres du test.
+
+`page` est une fixture intégrée à Playwright. Les fixtures personnalisées du projet (`loginPage`, etc.) fonctionnent de la même façon.
+
+Sans fixture, chaque test construit ses objets :
+
+```typescript
+test('se connecter', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  // ...
+});
+```
+
+Avec une fixture, le test demande simplement `loginPage`, construite une seule fois dans `fixtures/index.ts` :
+
+```typescript
+test('se connecter', async ({ loginPage }) => {
+  // ...
+});
+```
+
+Une fixture est :
+
+- **créée à la demande** : seules les fixtures citées par un test sont préparées ;
+- **isolée** : chaque test reçoit ses propres objets ;
+- **réutilisable** : définie une fois, utilisable dans tous les tests.
+
+Pour aller plus loin : [documentation officielle sur les fixtures](https://playwright.dev/docs/test-fixtures).
+
 ## 📂 Découper les fixtures en plusieurs fichiers
 
 Au début du projet, les fixtures personnalisées peuvent être regroupées dans un seul fichier, par exemple `fixtures/index.ts`.
@@ -23,7 +54,7 @@ Par exemple, dans `pages-fixtures.ts` :
 
 ```typescript
 import { test as base } from '@playwright/test';
-import { LoginPage } from '../pages/LoginPage';
+import { LoginPage } from '../pages/login-page';
 
 type PagesFixtures = {
   loginPage: LoginPage;
@@ -57,20 +88,22 @@ export { expect } from '@playwright/test';
 Les tests importent `test` et `expect` depuis le fichier central `index.ts`.
 
 ```typescript
-import { test, expect } from '../fixtures';
+import { test } from '../fixtures';
+import { EnvUtils } from '../utils/env-utils';
 
-test('should display the login page', async ({ page, loginPage }) => {
-  await page.goto('/login');
+test('un utilisateur standard peut se connecter', async ({ loginPage }) => {
+  const { username, password } = EnvUtils.getCredentials('standard');
 
-  // Ajouter les vérifications nécessaires.
+  await loginPage.login(username, password);
+  await loginPage.verifierConnexion();
 });
 ```
 
-L'import depuis `../fixtures` fonctionne si le fichier `index.ts` est bien résolu comme point d'entrée du dossier.
+L'import `../fixtures` fonctionne parce que le fichier central s'appelle `index.ts` : c'est lui que TypeScript charge quand on importe un dossier.
 
 ### ⚠️ Points d'attention
 
 - Chaque fichier doit exporter son propre objet `test`, étendu avec ses fixtures.
 - Les noms des fixtures doivent être uniques entre les différents groupes fusionnés.
 - `mergeTests()` permet de combiner plusieurs objets `test` personnalisés sans devoir redéclarer toutes les fixtures dans un seul fichier.
-- Il est inutile de séparer les fixtures trop tôt : commence avec un seul fichier et découpe-le lorsque cela améliore réellement la lisibilité du projet.
+- Il est inutile de séparer les fixtures trop tôt : commencer avec un seul fichier et le découper lorsque cela améliore réellement la lisibilité du projet.
