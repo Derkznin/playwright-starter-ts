@@ -25,7 +25,7 @@ npx playwright install
 
 Les tests lisent leur configuration (URL de l'application, identifiants de test) dans un fichier `.env`, qui n'est **jamais versionné**.
 
-#### Créer son `.env`
+#### Créer le fichier `.env`
 
 1. Copier le modèle fourni, à la racine du projet (au même niveau que `package.json`) :
 
