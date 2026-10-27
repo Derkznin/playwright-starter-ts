@@ -56,10 +56,15 @@ Chaque compte est un **profil** : le test choisit celui qu'il utilise. Pour ajou
 
 #### Plusieurs environnements (facultatif)
 
-Pour tester plusieurs environnements, créer un fichier par environnement (`.env.dev`, `.env.staging`…) contenant **toutes** les variables, puis choisir l'environnement au lancement :
+Lancer cette commande :
+```bash
+npm install -D cross-env
+```
+
+Pour tester plusieurs environnements, créer un fichier par environnement (`.env.dev`, `.env.staging`, etc...) contenant **toutes** les variables, puis choisir l'environnement au lancement :
 
 ```bash
-ENV=staging npx playwright test
+npx cross-env ENV=staging npx playwright test
 ```
 
 Sans `ENV`, seul le `.env` par défaut est chargé.

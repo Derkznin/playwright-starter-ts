@@ -67,11 +67,31 @@ export default defineConfig({
   // --- Navigateurs ---
   projects: [
     // Chromium : lancé par défaut avec un simple `npx playwright test`
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    {
+      name: 'chromium',
+      use: {
+        ...devices['Desktop Chrome'],
+        headless: !!process.env.CI, // Headless sur CI, avec navigateur visible en local
+      },
+    },
 
     // Firefox et WebKit restent configurés mais ne tournent pas par défaut (`default: false`,
     // Pour les lancer : `npx playwright test --project=firefox` ou tous à la fois (ex. en CI) : `npx playwright test --project="*"`
-    { name: 'firefox', use: { ...devices['Desktop Firefox'] }, default: false },
-    { name: 'webkit', use: { ...devices['Desktop Safari'] }, default: false },
+    {
+      name: 'firefox',
+      use: {
+        ...devices['Desktop Firefox'],
+        headless: !!process.env.CI, // Headless sur CI, avec navigateur visible en local
+      },
+      default: false,
+    },
+    {
+      name: 'webkit',
+      use: {
+        ...devices['Desktop Safari'],
+        headless: !!process.env.CI, // Headless sur CI, avec navigateur visible en local
+      },
+      default: false,
+    },
   ],
 });

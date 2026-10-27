@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { expect, Page } from '@playwright/test';
 
 export class LoginPage {
   readonly page: Page;
@@ -15,8 +15,9 @@ export class LoginPage {
    */
   async login(username: string, password: string) {
     // Remplir les champs et soumettre le formulaire
-    await this.page.locator('').fill(username);
-    await this.page.locator('').fill(password);
+    await this.page.locator('[data-test="username"]').fill(username);
+    await this.page.locator('[data-test="password"]').fill(password);
+    await this.page.locator('[data-test="login-button"]').click();
   }
 
   /**
@@ -24,5 +25,12 @@ export class LoginPage {
    */
   async logout() {
     // Déconnecter l'utilisateur
+  }
+
+  /**
+   * Vérifier que la connexion a fonctionnée
+   */
+  async verifyLogin() {
+    await expect(this.page.locator('[data-test="inventory-container"]')).toBeVisible;
   }
 }
