@@ -227,7 +227,7 @@ Le contenu doit être un JSON valide contenant les profils nécessaires aux test
 
 ### 2. Recréer le fichier pendant le workflow
 
-Dans `.github/workflows/playwright.yml`, ajouter cette étape **avant celle qui lance les tests** :
+Dans `.github/workflows/playwright.yml`, ajouter cette étape **avant "Run Playwright tests" qui lance les tests**  :
 
 ```yaml
 - name: Create test users file
