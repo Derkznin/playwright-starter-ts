@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: "Environnement à tester"
+        description: 'Environnement à tester'
         required: true
         type: choice
         options:
@@ -43,7 +43,7 @@ jobs:
       - name: Run Playwright tests
         run: npx playwright test
         env:
-          ENV: ${{ inputs.environment || 'staging' }}
+          BASE_URL: https://www.saucedemo.com
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
