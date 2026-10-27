@@ -1,4 +1,4 @@
-# Commandes de développement
+# ⌨️ Commandes de développement
 
 | Commande             | Description                                                          |
 | -------------------- | -------------------------------------------------------------------- |
