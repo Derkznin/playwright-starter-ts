@@ -21,38 +21,37 @@ npm install
 npx playwright install
 ```
 
-### 🔐 2. Configurer les variables d'environnement
+## 🔐 2. Configurer les variables d'environnement
 
-Les tests lisent leur configuration (URL de l'application, identifiants de test) dans un fichier `.env`, qui n'est **jamais versionné**.
+Les tests utilisent des variables d'environnement pour récupérer leur configuration, notamment l'URL de l'application testée. Ces variables sont définies dans un fichier `.env`, qui ne doit **jamais être versionné**.
 
-#### Créer le fichier `.env`
+### Créer le fichier `.env`
 
-1. Copier le modèle fourni, à la racine du projet (au même niveau que `package.json`) :
+1. À la racine du projet, au même niveau que `package.json`, copie le fichier modèle :
 
    ```bash
    cp .env.example .env
    ```
 
-2. Remplacer les valeurs factices par celles de l'application testée :
+2. Ouvre le fichier `.env` et remplace lA valeur fictive par celle correspondant à ton environnement de test :
 
    ```dotenv
    BASE_URL=https://example.com
-
-   STANDARD_ID=votre-identifiant
-   STANDARD_PASSWORD=votre-mot-de-passe
    ```
 
-3. Vérifier avec `git status` que `.env` n'apparaît pas dans les fichiers à commiter.
+3. Vérifie que le fichier `.env` est bien ignoré par Git :
 
-#### Les variables
+   ```bash
+   git status
+   ```
 
-| Variable            | Rôle                                                      |
-| ------------------- | --------------------------------------------------------- |
-| `BASE_URL`          | URL de l'application testée                               |
-| `<PROFIL>_ID`       | Identifiant du compte de test du profil (ex. `STANDARD_`) |
-| `<PROFIL>_PASSWORD` | Mot de passe du compte de test du profil                  |
+   Si le fichier `.env` apparaît parmi les fichiers à commiter, vérifie qu'il est bien ajouté au fichier `.gitignore`.
 
-Chaque compte est un **profil** : le test choisit celui qu'il utilise. Pour ajouter un compte, voir [docs/connexion.md](docs/connexion.md).
+### Variables d'environnement
+
+| Variable   | Rôle                         |
+| ---------- | ---------------------------- |
+| `BASE_URL` | URL de l'application testée. |
 
 #### Plusieurs environnements (facultatif)
 
@@ -62,7 +61,7 @@ Lancer cette commande :
 npm install -D cross-env
 ```
 
-Pour tester plusieurs environnements, créer un fichier par environnement (`.env.dev`, `.env.staging`, etc...) contenant **toutes** les variables, puis choisir l'environnement au lancement :
+Pour tester plusieurs environnements, créer un fichier par environnement (`.env.dev`, `.env.staging`, etc...) contenant la variable `BASE_URL`, puis choisir l'environnement au lancement :
 
 ```bash
 npx cross-env ENV=staging npx playwright test
@@ -101,38 +100,50 @@ Pour les commandes de qualité du code et de vérification, consultez la [docume
 
 ## 🧰 Fonctionnalités
 
-- **TypeScript** : typage statique pour sécuriser et structurer le code.
-- **Playwright** : exécution des tests end-to-end sur plusieurs navigateurs.
+- **TypeScript** : typage statique pour améliorer la fiabilité et la maintenabilité du code.
+- **Playwright** : automatisation des tests end-to-end sur plusieurs navigateurs.
 - **ESLint** : analyse statique du code avec des règles adaptées à TypeScript et Playwright.
-- **Prettier** : formatage automatique et homogène du code.
-- **Page Object Model** : séparation des interactions avec les pages et des scénarios de test.
-- **Fixtures personnalisées** : réutilisation et gestion du contexte de test.
-- **Comptes de test par profils** : identifiants stockés dans le `.env`, avec un profil choisi dans chaque test (voir [Connexion et comptes de test](docs/connexion.md)).
+- **Prettier** : formatage homogène du code pour faciliter sa lecture et sa maintenance.
+- **Page Object Model (POM)** : séparation des interactions avec les pages et des scénarios de test.
+- **Fixtures personnalisées** : réutilisation des ressources et gestion du contexte de test.
+- **Comptes de test par profil** : identifiants stockés dans `config/test-users.json`, avec sélection du profil utilisé par chaque test (voir [Connexion et comptes de test](docs/connexion.md)).
+- **Intégration continue avec GitHub Actions** : exécution automatique des vérifications ESLint, Prettier et TypeScript lors des push et des pull requests.
+- **Exécution manuelle des tests E2E** : lancement des tests Playwright sur l'environnement choisi (`staging` ou `production`) depuis GitHub Actions.
 
 ## 📁 Structure du projet
 
 ```text
 playwright-starter-ts/
 ├── .github/
-│   └── workflows/              # Pipeline CI (GitHub Actions)
-├── docs/                       # Documentation détaillée
-├── fixtures/                   # Fixtures personnalisées Playwright
-├── pages/                      # Page Objects
-├── tests/                      # Tests end-to-end (.spec.ts)
-├── utils/                      # Fonctions et classes utilitaires
-├── .env.example                # Modèle du fichier .env (valeurs factices)
-├── .prettierignore             # Fichiers ignorés par Prettier
-├── .prettierrc                 # Configuration Prettier
-├── eslint.config.mjs           # Configuration ESLint
-├── package.json                # Dépendances et scripts npm
-├── playwright.config.ts        # Configuration Playwright
-└── tsconfig.json               # Configuration TypeScript
+│   └── workflows/
+│       ├── code-quality.yml       # Vérifications automatiques du code
+│       └── playwright.yml         # Exécution manuelle des tests E2E
+├── config/
+│   ├── test-users.example.json    # Modèle des comptes de test
+│   └── test-users-config.ts       # Chargement des comptes de test
+├── docs/                          # Documentation détaillée
+├── fixtures/                      # Fixtures personnalisées Playwright
+├── pages/                         # Page Objects
+├── tests/                         # Tests end-to-end (.spec.ts)
+├── utils/                         # Fonctions et classes utilitaires
+├── .env.example                   # Modèle des variables d'environnement
+├── .gitignore                     # Fichiers ignorés par Git
+├── .prettierignore                # Fichiers ignorés par Prettier
+├── .prettierrc                    # Configuration Prettier
+├── eslint.config.mjs              # Configuration ESLint
+├── package.json                   # Dépendances et scripts npm
+├── package-lock.json              # Versions verrouillées des dépendances
+├── playwright.config.ts           # Configuration Playwright
+└── tsconfig.json                  # Configuration TypeScript
 ```
+
+**Remarque :** les fichiers `.env` et `config/test-users.json` sont des fichiers locaux contenant la configuration et les identifiants des comptes de test. Ils ne doivent pas être versionnés. Seuls leurs modèles respectifs sont suivis par Git.
 
 ## 📚 Documentation détaillée
 
 - 🖥️ [Commandes de développement](docs/commandes-developpement.md)
-- 📝 [Conventions](docs/conventions.md)
+- 🔐 [Connexion et comptes de test](docs/connexion.md)
+- 📝 [Conventions de nommage](docs/conventions.md)
 - 🧩 [Fixtures](docs/fixtures.md)
 - 🔄 [Mettre à jour Playwright](docs/mettre-a-jour-playwright.md)
 
