@@ -44,9 +44,8 @@ export default defineConfig({
   // --- Options communes à tous les projets (navigateurs) ---
   use: {
     // URL de base : permet d'écrire page.goto("/") dans les tests.
-    // Vient du .env (BASE_URL), avec saucedemo.com en valeur par défaut.
-    // saucedemo.com est A REMPLACER
-    baseURL: process.env.BASE_URL ?? 'https://www.saucedemo.com',
+    // Vient du .env (BASE_URL).
+    baseURL: process.env.BASE_URL,
 
     actionTimeout: 10_000, // durée maximale d'une action (clic, saisie…)
     navigationTimeout: 15_000, // durée maximale d'un chargement de page

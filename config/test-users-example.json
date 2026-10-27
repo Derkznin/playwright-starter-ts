@@ -1,0 +1,10 @@
+{
+  "standard": {
+    "username": "exemple_user",
+    "password": "exemple_mdp"
+  },
+  "locked": {
+    "username": "exemple_user",
+    "password": "exemple_mdp"
+  }
+}

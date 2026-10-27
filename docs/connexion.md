@@ -1,30 +1,31 @@
-# Connexion et comptes de test
+# 🔐 Connexion et comptes de test
 
 Cette page explique comment gérer les identifiants de connexion dans le template : où les stocker, comment choisir le compte utilisé par un test et comment les fournir à la CI avec GitHub Actions.
 
-## Principe
+## 🧭 Principe
 
 - Le fichier `.env` contient la configuration générale de l'application, notamment `BASE_URL`.
-- Le fichier `test-users.json` contient les identifiants des comptes de test. Il ne doit pas être versionné.
+- Le fichier `config/test-users.json` contient les identifiants des comptes de test. Il ne doit pas être versionné.
 - Le fichier `config/test-users-config.ts` lit le fichier JSON et rend les comptes accessibles aux tests.
 - Le test choisit le profil à utiliser et transmet ses identifiants à la page de connexion.
 - Les pages ne contiennent aucune donnée de connexion : elles reçoivent l'identifiant et le mot de passe en paramètres.
 
-## Fichiers concernés
+## 📁 Fichiers concernés
 
-| Fichier                       | Rôle                                                                  |
-| ----------------------------- | --------------------------------------------------------------------- |
-| `.env`                        | Configuration locale, notamment l'URL de base                         |
-| `.env.example`                | Modèle de configuration versionné                                     |
-| `test-users.json`             | Comptes de test et identifiants, ignorés par Git                      |
-| `config/test-users-config.ts` | Lecture et mise à disposition des comptes de test                     |
-| `utils/env-utils.ts`          | Utilitaires pour les variables d'environnement, si encore nécessaires |
-| `pages/login/login-page.ts`   | Page de connexion avec la méthode `login(username, password)`         |
-| `playwright.config.ts`        | Configuration Playwright et chargement des variables d'environnement  |
+| Fichier                          | Rôle                                                                  |
+| -------------------------------- | --------------------------------------------------------------------- |
+| `.env`                           | Configuration locale, notamment l'URL de base                         |
+| `.env.example`                   | Modèle de configuration versionné                                     |
+| `config/test-users.json`         | Comptes de test et identifiants, ignorés par Git                      |
+| `config/test-users-example.json` | Comptes de test et identifiants d'exemple                             |
+| `config/test-users-config.ts`    | Lecture et mise à disposition des comptes de test                     |
+| `utils/env-utils.ts`             | Utilitaires pour les variables d'environnement, si encore nécessaires |
+| `pages/login/login-page.ts`      | Page de connexion avec la méthode `login(username, password)`         |
+| `playwright.config.ts`           | Configuration Playwright et chargement des variables d'environnement  |
 
-## Configuration
+## ⚙️ Configuration
 
-### 1. Le fichier `.env`
+### 📄 1. Le fichier .env
 
 Ce fichier se trouve à la racine du projet, à côté de `package.json`.
 
@@ -34,12 +35,12 @@ Exemple :
 
 ```dotenv
 # URL de base de l'application
-BASE_URL=https://www.saucedemo.com
+BASE_URL=https://www.exemple.com
 ```
 
 Le fichier `.env` ne doit pas être versionné s'il contient des informations sensibles.
 
-### 2. Le fichier `.env.example`
+### 📄 2. Le fichier .env.example
 
 Ce fichier sert de modèle aux personnes qui récupèrent le projet. Il peut être versionné puisqu'il ne contient pas de mot de passe.
 
@@ -47,12 +48,31 @@ Exemple :
 
 ```dotenv
 # URL de base de l'application
-BASE_URL=https://www.saucedemo.com
+BASE_URL=https://www.exemple.com
 ```
 
-### 3. Le fichier `test-users.json`
+### 📄 3. Le fichier test-users.json
 
-Ce fichier se trouve à la racine du projet. Il contient les identifiants des comptes de test, regroupés par profil.
+#### 📋 Fichier d'exemple
+
+Le fichier `config/test-users.example.json` fournit un modèle de configuration contenant des exemples de comptes de test.
+
+#### 🛠️ Création du fichier
+
+Dans le dossier `config/`, copiez le fichier `test-users.example.json` et nommez la copie `test-users.json`.
+
+La structure du dossier sera la suivante :
+
+```text
+config/
+├── test-users-config.ts
+├── test-users.example.json
+└── test-users.json
+```
+
+#### 📝 Contenu du fichier
+
+Le fichier `test-users.json` contient les identifiants des comptes de test, regroupés par profil.
 
 Exemple :
 
@@ -60,16 +80,16 @@ Exemple :
 {
   "standard": {
     "username": "standard_user",
-    "password": "secret_sauce"
+    "password": "standard_user"
   },
   "locked": {
-    "username": "locked_out_user",
-    "password": "secret_sauce"
+    "username": "locked_user",
+    "password": "locked_user"
   }
 }
 ```
 
-Les identifiants ci-dessus sont des exemples publics de SauceDemo.
+Les identifiants ci-dessus sont des exemples. Adaptez-les aux comptes de test de votre application.
 
 Chaque compte possède :
 
@@ -77,16 +97,26 @@ Chaque compte possède :
 - `password` : le mot de passe ;
 - un nom de profil, par exemple `standard` ou `locked`, qui permet de sélectionner le compte dans les tests.
 
-**Important :** ajouter `test-users.json` dans `.gitignore` afin d'éviter de versionner les identifiants.
+#### 🚫 Ignorer le fichier avec Git
+
+Le fichier `test-users.json` peut contenir des identifiants confidentiels. Il ne doit donc pas être versionné dans le dépôt.
+
+Ajoutez la ligne suivante au fichier `.gitignore`, situé à la racine du projet :
 
 ```gitignore
 # Comptes de test
-test-users.json
+config/test-users.json
 ```
 
-Si le fichier a déjà été suivi par Git, l'ajout dans `.gitignore` ne suffit pas à arrêter son suivi. Il faut également le retirer de l'index Git.
+Le fichier `config/test-users.example.json`, quant à lui, doit rester versionné afin de servir de modèle.
 
-### 4. Le fichier `config/test-users-config.ts`
+Si `test-users.json` a déjà été suivi par Git, l'ajout dans `.gitignore` ne suffit pas à arrêter son suivi. Retirez-le de l'index Git avec la commande suivante :
+
+```bash
+git rm --cached config/test-users.json
+```
+
+### 💻 4. Le fichier `config/test-users-config.ts`
 
 Ce fichier lit le JSON et exporte les comptes pour qu'ils puissent être utilisés dans les tests.
 
@@ -101,7 +131,7 @@ interface TestUser {
   password: string;
 }
 
-const usersPath = resolve(process.cwd(), 'test-users.json');
+const usersPath = resolve(process.cwd(), 'config', 'test-users.json');
 const usersData = readFileSync(usersPath, 'utf-8');
 
 export const testUsers: Record<string, TestUser> = JSON.parse(usersData);
@@ -118,9 +148,9 @@ testUsers.standard.password;
 
 Ces expressions permettent de récupérer l'identifiant et le mot de passe du profil `standard`.
 
-### 5. La page de connexion
+### 🔑 5. La page de connexion
 
-La page de connexion ne lit ni `.env` ni `test-users.json`. Elle reçoit les identifiants en paramètres.
+La page de connexion ne lit ni `.env` ni `test-users-config.json`. Elle reçoit les identifiants en paramètres.
 
 Exemple à adapter aux champs de l'application testée :
 
@@ -144,7 +174,7 @@ export class LoginPage {
 
 Les libellés des champs et du bouton doivent correspondre à ceux de l'application testée.
 
-## Utilisation dans un test
+## 🧪 Utilisation dans un test
 
 Le test importe les comptes depuis `config/test-users-config.ts`, choisit un profil et transmet ses identifiants à la page de connexion.
 
@@ -173,11 +203,11 @@ Le chemin `../../fixtures` dépend de l'emplacement du test. Il faut l'adapter �
 
 Les tests doivent également vérifier le résultat attendu : par exemple, la redirection vers la page d'accueil pour un utilisateur valide ou l'affichage d'un message d'erreur pour un utilisateur bloqué.
 
-## Ajouter un compte de test
+## ➕ Ajouter un compte de test
 
 Pour ajouter un compte :
 
-1. Ajouter un nouveau profil dans `test-users.json`.
+1. Ajouter un nouveau profil dans `config/test-users.json`.
 2. Renseigner son `username` et son `password`.
 3. Utiliser le nouveau profil dans le test concerné.
 
@@ -187,7 +217,7 @@ Exemple d'un profil `admin` :
 {
   "standard": {
     "username": "standard_user",
-    "password": "secret_sauce"
+    "password": "standard_password"
   },
   "admin": {
     "username": "admin_user",
@@ -208,54 +238,110 @@ Aucune modification de la page de connexion n'est nécessaire pour ajouter un co
 
 Avec le type `Record<string, TestUser>`, TypeScript ne vérifie toutefois pas automatiquement que le nom du profil existe dans le JSON. Si le profil est absent, il faudra corriger le fichier ou le nom utilisé dans le test.
 
-## Exécution dans la CI avec GitHub Actions
+## 🚀 Exécution dans la CI avec GitHub Actions
 
-Le fichier `test-users.json` n'étant pas versionné, GitHub Actions ne le récupère pas automatiquement.
+Le fichier `config/test-users.json` n'étant pas versionné, GitHub Actions ne le récupère pas automatiquement lors de la récupération du dépôt.
 
-Pour exécuter les tests dans la CI, il faut fournir les comptes de test de manière sécurisée.
+Pour exécuter les tests dans la CI, il faut fournir les comptes de test de manière sécurisée, puis recréer ce fichier pendant le workflow.
 
-### 1. Créer un secret GitHub
+### 🔒 1. Créer un secret GitHub
 
-Dans le dépôt GitHub, ouvrir :
+Dans le dépôt GitHub, ouvrez :
 
 **Settings > Secrets and variables > Actions > New repository secret**
 
-Créer le secret suivant :
+Créez le secret suivant :
 
 - **Name :** `TEST_USERS_JSON`
-- **Secret :** le contenu JSON complet de `test-users.json`.
+- **Secret :** le contenu JSON complet du fichier `config/test-users.json`.
 
 Le contenu doit être un JSON valide contenant les profils nécessaires aux tests.
 
-### 2. Recréer le fichier pendant le workflow
+### 🧰 2. Recréer le fichier pendant le workflow
 
-Dans `.github/workflows/playwright.yml`, ajouter cette étape **avant "Run Playwright tests" qui lance les tests** :
+Dans `.github/workflows/playwright.yml`, ajoutez l'étape suivante **avant "name: Run Playwright tests" qui lance les tests Playwright** :
 
 ```yaml
 - name: Create test users file
   env:
     TEST_USERS_JSON: ${{ secrets.TEST_USERS_JSON }}
-  run: node -e "require('node:fs').writeFileSync('test-users.json', process.env.TEST_USERS_JSON)"
+  run: node -e "require('node:fs').writeFileSync('config/test-users.json', process.env.TEST_USERS_JSON)"
 ```
 
-Cette étape recrée le fichier `test-users.json` à la racine du projet. Le fichier `config/test-users-config.ts` peut alors le lire comme en local.
+Cette étape recrée le fichier `config/test-users.json` à partir du secret GitHub. Le fichier `config/test-users-config.ts` peut alors charger les comptes de test comme en local.
 
-Le workflow doit également fournir `BASE_URL` si cette variable est nécessaire à l'environnement testé.
+Le dossier `config/` doit exister dans le dépôt pour que le fichier puisse y être créé.
 
-**Attention :** la présence du secret ne suffit pas à elle seule. Le workflow doit recréer le fichier avant l'exécution des tests. Il faut également éviter d'afficher son contenu dans les logs.
+### 🌍 3. Fournir l'URL de l'application
 
-Utiliser uniquement des comptes dédiés aux tests, jamais des comptes personnels ou de production.
+Si les tests utilisent la variable d'environnement `BASE_URL`, le workflow doit lui fournir l'URL de l'application à tester.
 
-## Règles et précautions
+Pour pouvoir choisir entre plusieurs environnements, par exemple _staging_ et _production_, vous pouvez créer des variables dans GitHub Actions.
 
-- Ne jamais versionner `.env` ou `test-users.json` lorsqu'ils contiennent des informations sensibles.
+#### ⚙️ Créer les variables dans GitHub
+
+Dans votre dépôt GitHub, ouvrez :
+
+**Settings > Secrets and variables > Actions > Variables**
+
+1. Cliquez sur **New repository variable**.
+2. Créez la variable :
+   - **Name :** `PRODUCTION_BASE_URL`
+   - **Value :** l'URL de votre environnement de staging, par exemple `https://production.exemple.com`.
+
+Remplacez l'URL par celle de votre application.
+
+Ces valeurs sont des **variables GitHub Actions**, et non des secrets, car les URL ne sont généralement pas confidentielles. Si une URL contient des informations sensibles, utilisez plutôt un secret.
+
+#### 🔗 Utiliser les variables dans le workflow
+
+Dans `.github/workflows/playwright.yml`, configurez la variable `BASE_URL` dans l'étape qui lance les tests :
+
+```yaml
+- name: Run Playwright tests
+  run: npx playwright test
+  env:
+    BASE_URL: ${{ inputs.environment == 'production' && vars.PRODUCTION_BASE_URL || vars.STAGING_BASE_URL }}
+```
+
+Cette configuration sélectionne l'URL selon l'environnement choisi au lancement manuel du workflow :
+
+- **`staging`** : utilise `STAGING_BASE_URL`.
+- **`production`** : utilise `PRODUCTION_BASE_URL`.
+
+Vérifiez que les noms des variables dans GitHub correspondent exactement à ceux utilisés dans le fichier YAML.
+
+#### 🧪 Utilisation dans Playwright
+
+Dans `playwright.config.ts`, Playwright récupère l'URL fournie par le workflow grâce à `process.env.BASE_URL` :
+
+```typescript
+use: {
+  baseURL: process.env.BASE_URL,
+},
+```
+
+Les tests et les pages peuvent alors utiliser des chemins relatifs, par exemple `page.goto('/')`, sans avoir à définir l'URL complète dans chaque test.
+
+En local, la variable `BASE_URL` peut être définie dans le fichier `.env`. Dans GitHub Actions, elle est fournie directement par le workflow.
+
+### ⚠️ Points de vigilance
+
+- Le secret `TEST_USERS_JSON` doit contenir un JSON valide.
+- Le workflow doit recréer le fichier avant l'exécution des tests.
+- N'affichez jamais le contenu du secret dans les logs.
+- Utilisez des comptes dédiés aux tests et évitez les comptes personnels ou les identifiants de production.
+
+## 🛡️ Règles et précautions
+
+- Ne jamais versionner `.env` ou `config/test-users.json` lorsqu'ils contiennent des informations sensibles.
 - Vérifier avec `git status` que ces fichiers ne sont pas suivis par Git.
 - Utiliser uniquement des comptes de test dédiés.
 - Ne pas placer les identifiants directement dans les tests ou les pages : les tests choisissent un profil et transmettent ses identifiants à la page.
 - Les rapports, traces et vidéos Playwright peuvent contenir des informations saisies pendant les tests. Éviter d'y utiliser des données sensibles.
 - Ne pas conserver plusieurs systèmes de gestion des identifiants en parallèle sans nécessité. Si `utils/env-utils.ts` n'est plus utilisé, il peut être supprimé après vérification des imports.
 
-## Dépannage
+## 🩺 Dépannage
 
 | Symptôme                               | Cause probable                                                        | Vérification                                                |
 | -------------------------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------- |
