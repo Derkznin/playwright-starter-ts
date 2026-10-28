@@ -88,18 +88,16 @@ export { expect } from '@playwright/test';
 Les tests importent `test` et `expect` depuis le fichier central `index.ts`.
 
 ```typescript
-import { test } from '../fixtures';
-import { EnvUtils } from '../utils/env-utils';
+import { test } from '../../fixtures';
+import { testUsers } from '../../config/test-users-config';
 
 test('un utilisateur standard peut se connecter', async ({ loginPage }) => {
-  const { username, password } = EnvUtils.getCredentials('standard');
-
-  await loginPage.login(username, password);
+  await loginPage.login(testUsers.standard.username, testUsers.standard.password);
   await loginPage.verifierConnexion();
 });
 ```
 
-L'import `../fixtures` fonctionne parce que le fichier central s'appelle `index.ts` : c'est lui que TypeScript charge quand on importe un dossier.
+L'import `../../fixtures` fonctionne parce que le fichier central s'appelle `index.ts` : c'est lui que TypeScript charge quand on importe un dossier.
 
 ### ⚠️ Points d'attention
 

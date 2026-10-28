@@ -12,16 +12,15 @@ Cette page explique comment gérer les identifiants de connexion dans le templat
 
 ## 📁 Fichiers concernés
 
-| Fichier                          | Rôle                                                                  |
-| -------------------------------- | --------------------------------------------------------------------- |
-| `.env`                           | Configuration locale, notamment l'URL de base                         |
-| `.env.example`                   | Modèle de configuration versionné                                     |
-| `config/test-users.json`         | Comptes de test et identifiants, ignorés par Git                      |
-| `config/test-users-example.json` | Comptes de test et identifiants d'exemple                             |
-| `config/test-users-config.ts`    | Lecture et mise à disposition des comptes de test                     |
-| `utils/env-utils.ts`             | Utilitaires pour les variables d'environnement, si encore nécessaires |
-| `pages/login/login-page.ts`      | Page de connexion avec la méthode `login(username, password)`         |
-| `playwright.config.ts`           | Configuration Playwright et chargement des variables d'environnement  |
+| Fichier                          | Rôle                                                                 |
+| -------------------------------- | -------------------------------------------------------------------- |
+| `.env`                           | Configuration locale, notamment l'URL de base                        |
+| `.env.example`                   | Modèle de configuration versionné                                    |
+| `config/test-users.json`         | Comptes de test et identifiants, ignorés par Git                     |
+| `config/test-users-example.json` | Comptes de test et identifiants d'exemple                            |
+| `config/test-users-config.ts`    | Lecture et mise à disposition des comptes de test                    |
+| `pages/login/login-page.ts`      | Page de connexion avec la méthode `login(username, password)`        |
+| `playwright.config.ts`           | Configuration Playwright et chargement des variables d'environnement |
 
 ## ⚙️ Configuration
 
@@ -343,11 +342,10 @@ En local, la variable `BASE_URL` peut être définie dans le fichier `.env`. Dan
 
 ## 🩺 Dépannage
 
-| Symptôme                               | Cause probable                                                        | Vérification                                                |
-| -------------------------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------- |
-| Erreur de lecture de `test-users.json` | Le fichier est absent ou le chemin est incorrect                      | Vérifier que le fichier se trouve à la racine du projet     |
-| Erreur de syntaxe JSON                 | Le contenu du fichier n'est pas un JSON valide                        | Vérifier les guillemets, les virgules et les accolades      |
-| Un profil est introuvable              | Le nom utilisé dans le test ne correspond pas à celui du JSON         | Comparer le nom du profil dans les deux fichiers            |
-| Fonctionne en local, mais échoue en CI | Le secret est absent ou le fichier n'est pas recréé                   | Vérifier le secret GitHub et l'ordre des étapes du workflow |
-| Erreur de connexion                    | Les identifiants ou l'URL ne sont pas corrects                        | Vérifier `BASE_URL` et les comptes utilisés                 |
-| Erreur TypeScript sur un profil        | La structure des données ou le type utilisé ne correspond pas au code | Vérifier le profil et la structure de `TestUser`            |
+| Symptôme                               | Cause probable                                                | Vérification                                                |
+| -------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------------------- |
+| Erreur de lecture de `test-users.json` | Le fichier est absent ou le chemin est incorrect              | Vérifier que le fichier se trouve à la racine du projet     |
+| Erreur de syntaxe JSON                 | Le contenu du fichier n'est pas un JSON valide                | Vérifier les guillemets, les virgules et les accolades      |
+| Un profil est introuvable              | Le nom utilisé dans le test ne correspond pas à celui du JSON | Comparer le nom du profil dans les deux fichiers            |
+| Fonctionne en local, mais échoue en CI | Le secret est absent ou le fichier n'est pas recréé           | Vérifier le secret GitHub et l'ordre des étapes du workflow |
+| Erreur de connexion                    | Les identifiants ou l'URL ne sont pas corrects                | Vérifier `BASE_URL` et les comptes utilisés                 |

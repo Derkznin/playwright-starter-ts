@@ -11,7 +11,7 @@ export class BasePage {
   }
 
   /**
-   * Connexion à la plateforme
+   * Navigation vers la plateforme
    */
   async navigateTo(path: string) {
     await this.page.goto(path);
