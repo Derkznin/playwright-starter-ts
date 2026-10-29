@@ -141,6 +141,7 @@ playwright-starter-ts/
 
 ## 📚 Documentation détaillée
 
+- 🚀 [CI/CD — Intégration et exécution des tests](docs/ci-cd.md)
 - 🖥️ [Commandes de développement](docs/commandes-developpement.md)
 - 🔐 [Connexion et comptes de test](docs/connexion.md)
 - 📝 [Conventions de nommage](docs/conventions.md)
