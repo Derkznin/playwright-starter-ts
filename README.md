@@ -151,3 +151,7 @@ playwright-starter-ts/
 ## 👤 Auteur
 
 Projet développé par Corentin H.
+
+## Licence
+
+Ce projet est distribué sous licence MIT. Vous êtes libre de l'utiliser, de le modifier et de le redistribuer, conformément aux conditions définies dans le fichier [LICENSE](LICENSE).
