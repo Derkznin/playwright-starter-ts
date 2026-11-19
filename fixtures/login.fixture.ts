@@ -1,5 +1,5 @@
 import { test as base, expect } from '@playwright/test';
-import { LoginPage } from '../pages/login/login-page';
+import { LoginPage } from '../pages/login/login.page';
 
 // Liste des fixtures personnalisées disponibles dans les tests
 type LoginFixtures = {
