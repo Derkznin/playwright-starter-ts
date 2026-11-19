@@ -106,6 +106,7 @@ Pour les commandes de qualité du code et de vérification, consultez la [docume
 - **Prettier** : formatage homogène du code pour faciliter sa lecture et sa maintenance.
 - **Page Object Model (POM)** : séparation des interactions avec les pages et des scénarios de test.
 - **Fixtures personnalisées** : réutilisation des ressources et gestion du contexte de test.
+- **Génération de fichiers avec Plop** : création automatisée de Page Objects, Fixtures, Tests et Utilitaires à partir de templates prédéfinis, avec possibilité de créer librement des sous-dossiers et plusieurs niveaux d'arborescence (voir [Génération de fichiers](docs/generateurs.md)).
 - **Comptes de test par profil** : identifiants stockés dans `config/test-users.json`, avec sélection du profil utilisé par chaque test (voir [Connexion et comptes de test](docs/connexion.md)).
 - **Intégration continue avec GitHub Actions** : exécution automatique des vérifications ESLint, Prettier et TypeScript lors des push et des pull requests.
 - **Exécution manuelle des tests E2E** : lancement des tests Playwright sur l'environnement choisi (`staging` ou `production`) depuis GitHub Actions.
@@ -146,12 +147,13 @@ playwright-starter-ts/
 - 🔐 [Connexion et comptes de test](docs/connexion.md)
 - 📝 [Conventions de nommage](docs/conventions.md)
 - 🧩 [Fixtures](docs/fixtures.md)
+- 🛠️ [Génération de fichiers avec Plop](docs/generateurs.md)
 - 🔄 [Mettre à jour Playwright](docs/mettre-a-jour-playwright.md)
 
 ## 👤 Auteur
 
 Projet développé par Corentin H.
 
-## Licence
+## ⚖️ Licence
 
 Ce projet est distribué sous licence MIT. Vous êtes libre de l'utiliser, de le modifier et de le redistribuer, conformément aux conditions définies dans le fichier [LICENSE](LICENSE).

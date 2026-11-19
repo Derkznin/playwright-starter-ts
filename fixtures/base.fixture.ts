@@ -1,16 +1,16 @@
 import { test as base, expect } from '@playwright/test';
-import { ExemplePage } from '../pages/exemple-a-reutiliser/exemple-page';
+import { BasePage } from '../pages/base/base.page';
 
 // Liste des fixtures personnalisées disponibles dans les tests
-type ExempleFixtures = {
-  exemplePage: ExemplePage;
+type BaseFixtures = {
+  basePage: BasePage;
 };
 
 // Étend le test de base de Playwright avec les fixtures
-export const exempleTest = base.extend<ExempleFixtures>({
+export const baseTest = base.extend<BaseFixtures>({
   // Copier ce bloc pour ajouter une page
-  exemplePage: async ({ page }, use) => {
-    await use(new ExemplePage(page));
+  basePage: async ({ page }, use) => {
+    await use(new BasePage(page));
   },
 });
 

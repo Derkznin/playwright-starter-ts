@@ -1,5 +1,5 @@
 import { test } from '../../fixtures';
-import { testUsers } from '../../config/test-users-config';
+import { testUsers } from '../../config/test-users.config';
 
 /**
  * Modèle de fichier de test : un fichier = une fonctionnalité.
