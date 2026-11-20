@@ -99,7 +99,7 @@ Créer le secret suivant :
 | ----------------- | -------------------------------------------------------------------- |
 | `TEST_USERS_JSON` | Contenu JSON des comptes de test nécessaires à l'exécution des tests |
 
-Le secret doit contenir un JSON valide correspondant à la structure attendue par `config/test-users-config.ts`.
+Le secret doit contenir un JSON valide correspondant à la structure attendue par `config/test-users.config.ts`.
 
 Exemple de structure :
 

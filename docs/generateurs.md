@@ -72,7 +72,7 @@ Les classes générées utilisent le format `PascalCase` avec le suffixe corresp
 | Élément             | Convention               | Exemple            |
 | ------------------- | ------------------------ | ------------------ |
 | Page Object         | `PascalCase` + `Page`    | `LoginPage`        |
-| Fixture             | `PascalCase` + `Fixture` | `LoginFixture`     |
+| Fixture             | `PascalCase` + `Fixture` | `LoginFixtures`    |
 | Test                | Nom en `kebab-case`      | `login.spec.ts`    |
 | Utilitaire          | `PascalCase` + `Utils`   | `DateUtils`        |
 | Fichier Page Object | `.page.ts`               | `login.page.ts`    |

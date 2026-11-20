@@ -6,7 +6,7 @@ Projet basé sur **Playwright** et **TypeScript**, visant à fournir un template
 
 ## ⚙️ Prérequis et installation
 
-- Node.js (testé avec la version 24)
+- Node.js 26 LTS (version recommandée)
 - npm
 - Git
 
@@ -121,7 +121,7 @@ playwright-starter-ts/
 │       └── playwright.yml         # Exécution manuelle des tests E2E
 ├── config/
 │   ├── test-users.example.json    # Modèle des comptes de test
-│   └── test-users-config.ts       # Chargement des comptes de test
+│   └── test-users.config.ts       # Chargement des comptes de test
 ├── docs/                          # Documentation détaillée
 ├── fixtures/                      # Fixtures personnalisées Playwright
 ├── pages/                         # Page Objects

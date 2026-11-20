@@ -6,7 +6,7 @@ Cette page explique comment configurer les comptes de test, choisir un profil da
 
 - Le fichier `.env` contient la configuration générale de l'application, notamment `BASE_URL`.
 - Le fichier `config/test-users.json` contient les identifiants des comptes de test. Il ne doit pas être versionné.
-- Le fichier `config/test-users-config.ts` lit le fichier JSON et rend les comptes accessibles aux tests.
+- Le fichier `config/test-users.config.ts` lit le fichier JSON et rend les comptes accessibles aux tests.
 - Chaque test choisit le profil dont il a besoin et transmet ses identifiants à la page de connexion.
 - Les Page Objects ne stockent pas les identifiants : ils les reçoivent en paramètres.
 
@@ -18,7 +18,7 @@ Cette page explique comment configurer les comptes de test, choisir un profil da
 | `.env.example`                   | Modèle versionné de la configuration locale                    |
 | `config/test-users.json`         | Comptes de test et identifiants ; fichier ignoré par Git       |
 | `config/test-users.example.json` | Exemple versionné de la structure des comptes                  |
-| `config/test-users-config.ts`    | Lecture et mise à disposition des comptes de test              |
+| `config/test-users.config.ts`    | Lecture et mise à disposition des comptes de test              |
 | `pages/login/login-page.ts`      | Page de connexion, avec la méthode `login(username, password)` |
 | `playwright.config.ts`           | Configuration Playwright, dont l'URL de base                   |
 
@@ -64,7 +64,7 @@ La structure du dossier sera alors :
 
 ```text
 config/
-├── test-users-config.ts
+├── test-users.config.ts
 ├── test-users.example.json
 └── test-users.json
 ```
@@ -117,7 +117,7 @@ Cette commande retire le fichier de l'index Git sans supprimer votre copie local
 
 ## 💻 Charger les comptes de test
 
-Le fichier `config/test-users-config.ts` lit le JSON et exporte les comptes pour qu'ils puissent être utilisés dans les tests.
+Le fichier `config/test-users.config.ts` lit le JSON et exporte les comptes pour qu'ils puissent être utilisés dans les tests.
 
 Exemple :
 
@@ -173,13 +173,13 @@ Les libellés des champs et du bouton doivent correspondre à ceux de l'applicat
 
 ## 🧪 Utiliser un profil dans un test
 
-Le test importe les comptes depuis `config/test-users-config.ts`, choisit un profil et transmet ses identifiants à la page de connexion.
+Le test importe les comptes depuis `config/test-users.config.ts`, choisit un profil et transmet ses identifiants à la page de connexion.
 
 Exemple :
 
 ```typescript
 import { test } from '../../fixtures';
-import { testUsers } from '../../config/test-users-config';
+import { testUsers } from '../../config/test-users.config';
 
 test.describe('Connexion', { tag: '@smoke' }, () => {
   test('un utilisateur standard peut se connecter', async ({ loginPage }) => {
@@ -266,7 +266,7 @@ Dans `.github/workflows/playwright.yml`, ajoutez cette étape **avant celle qui 
   run: node -e "require('node:fs').writeFileSync('config/test-users.json', process.env.TEST_USERS_JSON)"
 ```
 
-Cette étape recrée le fichier à partir du secret GitHub. Le fichier `config/test-users-config.ts` peut ensuite charger les comptes comme en local.
+Cette étape recrée le fichier à partir du secret GitHub. Le fichier `config/test-users.config.ts` peut ensuite charger les comptes comme en local.
 
 Le dossier `config/` doit exister dans le dépôt pour que le fichier puisse y être créé.
 
