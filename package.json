@@ -21,6 +21,9 @@
   ],
   "author": "Corentin H.",
   "license": "MIT",
+  "engines": {
+    "node": ">=26.0.0"
+  },
   "type": "commonjs",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
