@@ -1,7 +1,7 @@
 {
   "name": "playwright-starter-ts",
   "version": "1.0.0",
-  "description": "",
+  "description": "Reusable Playwright and TypeScript test automation template",
   "main": "index.js",
   "scripts": {
     "test": "playwright test",
@@ -12,9 +12,15 @@
     "typecheck": "tsc --noEmit",
     "plop": "plop"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "playwright",
+    "typescript",
+    "test-automation",
+    "e2e",
+    "template"
+  ],
+  "author": "Corentin H.",
+  "license": "MIT",
   "type": "commonjs",
   "devDependencies": {
     "@eslint/js": "^10.0.1",

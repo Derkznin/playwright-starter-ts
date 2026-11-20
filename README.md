@@ -15,8 +15,8 @@ Projet basé sur **Playwright** et **TypeScript**, visant à fournir un template
 Cloner le projet et installer les dépendances :
 
 ```bash
-git clone <url-du-depot>
-cd my-playwright-project
+git clone https://github.com/Derkznin/playwright-starter-ts.git
+cd playwright-starter-ts
 npm install
 npx playwright install
 ```
@@ -33,7 +33,7 @@ Les tests utilisent des variables d'environnement pour récupérer leur configur
    cp .env.example .env
    ```
 
-2. Ouvre le fichier `.env` et remplace lA valeur fictive par celle correspondant à ton environnement de test :
+2. Ouvre le fichier `.env` et remplace la valeur fictive par celle correspondant à ton environnement de test :
 
    ```dotenv
    BASE_URL=https://example.com
