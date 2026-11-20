@@ -125,17 +125,19 @@ playwright-starter-ts/
 ├── docs/                          # Documentation détaillée
 ├── fixtures/                      # Fixtures personnalisées Playwright
 ├── pages/                         # Page Objects
-├── tests/                         # Tests end-to-end (.spec.ts)
-├── utils/                         # Fonctions et classes utilitaires
-├── .env.example                   # Modèle des variables d'environnement
-├── .gitignore                     # Fichiers ignorés par Git
-├── .prettierignore                # Fichiers ignorés par Prettier
-├── .prettierrc                    # Configuration Prettier
-├── eslint.config.mjs              # Configuration ESLint
-├── package.json                   # Dépendances et scripts npm
-├── package-lock.json              # Versions verrouillées des dépendances
-├── playwright.config.ts           # Configuration Playwright
-└── tsconfig.json                  # Configuration TypeScript
+├── plop-templates/                 # Modèles de fichiers pour Plop
+├── tests/                          # Tests end-to-end (.spec.ts)
+├── utils/                          # Fonctions et classes utilitaires
+├── .env.example                    # Modèle des variables d'environnement
+├── .gitignore                      # Fichiers ignorés par Git
+├── .prettierignore                 # Fichiers ignorés par Prettier
+├── .prettierrc                     # Configuration Prettier
+├── eslint.config.mjs               # Configuration ESLint
+├── package.json                    # Dépendances et scripts npm
+├── package-lock.json               # Versions verrouillées des dépendances
+├── plopfile.mjs                    # Configuration des générateurs Plop
+├── playwright.config.ts            # Configuration Playwright
+└── tsconfig.json                   # Configuration TypeScript
 ```
 
 **Remarque :** les fichiers `.env` et `config/test-users.json` sont des fichiers locaux contenant la configuration et les identifiants des comptes de test. Ils ne doivent pas être versionnés. Seuls leurs modèles respectifs sont suivis par Git.
